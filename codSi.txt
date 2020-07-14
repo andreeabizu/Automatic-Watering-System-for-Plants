@@ -1,0 +1,47 @@
+
+int humiditySensor=A1;
+int lightSensor=4;
+int pumpPin=8;
+int waterLevelSensor=A0;
+
+int humidity;
+int waterLevel;
+
+
+void setup()
+{
+ pinMode(humiditySensor, INPUT);//setam pinul 2 ca intrare
+ pinMode(lightSensor,INPUT);//setam pinul 4 ca intrare
+ pinMode(waterLevelSensor,INPUT);//setam pinul A0 ca intrare
+ pinMode(pumpPin,OUTPUT);//setam pinul 8 ca iesire
+ Serial.begin(9600);
+
+}
+
+void loop()
+{
+humidity = analogRead(humiditySensor);
+humidity = map(humidity, 0 , 1023 , 0 , 100 );
+waterLevel = analogRead(waterLevelSensor);
+waterLevel = map( waterLevel , 0 , 600 , 0 , 100 );
+
+if(waterLevel<25)
+{
+  Serial.println("Nivel scazut");
+  digitalWrite(pumpPin,LOW);
+}
+else
+ if(humidity  > 90 && digitalRead(lightSensor)==HIGH )
+  {Serial.println("uda");
+  digitalWrite(pumpPin,HIGH);//pornim pompa
+  //delay(1000);
+  //digitalWrite(pumpPin,LOW);//oprim pompa
+  //Serial.println("se opreste");
+  }
+  else
+  { digitalWrite(pumpPin,LOW);//oprim pompa
+    Serial.println("Nu uda    ");
+  }
+delay(1000);  
+//Serial.println(humidity);
+}
